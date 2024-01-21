@@ -1,16 +1,24 @@
-import uuid
-
 class Module():
     def __init__(self, name, type):
-        self.uuid = uuid.uuid4()
-        self.name = name
-        self.type = type
+        self.Id = None
+        self.Name = name
+        self.Type = type
         self.Token = None
-        self.checkBox = None
-        self.moduleBox = None
+        self.CheckBox = None
+        self.ModuleBox = None
+        self.MacAddress = None
+        self.Paired = False
 
     def __str__(self):
-        return f'uuid: {self.uuid}, name: {self.name}, type: {self.type}, token: {self.Token}'
-
-    def getProperties(self):
-        return {'Uuid': self.uuid, 'Name': self.name, 'Type': self.type, 'Token': self.Token}
+        return f'Id: {self.Id}, Name: {self.Name}, Type: {self.Type}'
+    
+    def GetProperties(self):
+        return {'Id': self.Id, 'Name': self.Name, 'Type': self.Type, 'Paired': self.Paired, 'MacAddress': self.MacAddress }
+    
+    @staticmethod
+    def CreateClass(data):
+        mod = Module(data["Name"], data["Type"])
+        mod.Id = data["Id"]
+        mod.Paired = data["Paired"]
+        mod.MacAddress = data["MacAddress"]
+        return mod

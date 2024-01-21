@@ -1,12 +1,26 @@
-import uuid
-
 class Hub():
     def __init__(self, pairCode):
-        self.uuid = uuid.uuid4()
-        self.name = None
+        self.Id = None
+        self.Name = None
         self.Token = None
         self.PairCode = pairCode
+        self.MqttClient = None
+        self.MqttUsername = None
+        self.MqttPassword = None
+        self.DataFrequency = 5
+
     def __str__(self):
-        return f'uuid: {self.uuid}, name: {self.name}, token: {self.Token}'
-    def getProperties(self):
-        return {'Uuid': self.uuid,'Name': self.name, 'Token': self.Token}
+        return f'Id: {self.Id}, Name: {self.Name}, Token: {self.Token}'
+    
+    def GetProperties(self):
+        return {'Id': self.Id, 'Name': self.Name, 'Token': self.Token, 'PairCode': self.PairCode, 'MqttUsername': self.MqttUsername, 'MqttPassword': self.MqttPassword}
+    
+    @staticmethod
+    def CreateClass(data):
+        hub = Hub(data["PairCode"])
+        hub.Id = data["Id"]
+        hub.Name = data["Name"]
+        hub.Token = data["Token"]
+        hub.MqttUsername = data["MqttUsername"]
+        hub.MqttPassword = data["MqttPassword"]
+        return hub
