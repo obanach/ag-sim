@@ -79,7 +79,6 @@ class App(customtkinter.CTk):
         headers = {"X-Device-Token": hub.HubData.Token, "Content-Type": "application/json"}
         response = requests.delete(url=fullUrl, headers=headers)
         data = response.json()
-        #wynik operacji otrzymujemy i nic z tym nie robimy
 
 
     def updateHubList(self, hub):

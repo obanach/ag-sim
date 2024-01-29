@@ -120,7 +120,6 @@ class HubFrame(customtkinter.CTkFrame):
                 }
             })
         )
-        # jest ale pomijamy co odpowiedział serwer
         self.refreshModuleDisplay()
 
 
@@ -140,7 +139,7 @@ class HubFrame(customtkinter.CTkFrame):
         headers = {"X-Device-Token": self.HubData.Token, "Content-Type": "application/json"}
         response = requests.delete(url=fullUrl,
                                   headers=headers)
-        # jest ale pomijamy co odpowiedział serwer
+
         self.MqttClient.publish(
             f"hub/{self.HubData.Id}/module/delete", 
             json.dumps({
@@ -205,12 +204,9 @@ class HubFrame(customtkinter.CTkFrame):
                             serializedData = json.loads(response_data)
                             if 'message' in serializedData:
                                 if serializedData["message"] == "Hub not found":
-                                    #TODO wywalić wtedy tego huba
                                     pass
                                 if serializedData["message"] == "TODO":
-                                    #sprawdzić co otrzymuje jako response przy próbie wysłania danych gdy usunieto moduł z poziomu strony
                                     pass
-                            #print(f"{moduleId}: {response_data}")
         except Exception as err:
             print(err)
             return
@@ -223,14 +219,12 @@ class HubFrame(customtkinter.CTkFrame):
                 headers = {"X-Device-Token": self.HubData.Token, "Content-Type": "application/json"}
                 async with session.post(fullUrl, headers = headers) as response:
                     response_data = await response.text()
-                    #print(f"{module.Id}: {response_data}")
         async with aiohttp.ClientSession() as session:
             baseUrl = gv.GlobalVariables.HubHeartbeatEndpoint()
             fullUrl = baseUrl.format(self.HubData.Id)
             headers = {"X-Device-Token": self.HubData.Token, "Content-Type": "application/json"}
             async with session.post(fullUrl, headers = headers) as response:
                 response_data = await response.text()
-                #print(f"{self.HubData.Id}: {response_data}")
 
     def GetUnpairedModules(self):
         unpaired = []
@@ -242,7 +236,7 @@ class HubFrame(customtkinter.CTkFrame):
             module_json = {
                 "name": mod.Name,
                 "type": mod.Type,
-                "macAddress": mod.MacAddress  # Assuming MacAddress is set correctly in your Module class
+                "macAddress": mod.MacAddress
             }
             unpairedParsed.append(module_json)
         
@@ -251,7 +245,7 @@ class HubFrame(customtkinter.CTkFrame):
             "body": {"modules": unpairedParsed}
         }
 
-        return json.dumps(response_json, indent=4)  # Serializes the dictionary to a JSON formatted string
+        return json.dumps(response_json, indent=4)
     
     def GetPairedModules(self):
         paired = []
